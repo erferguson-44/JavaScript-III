@@ -15,29 +15,37 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
-
+// step 1
 function GameObject (attributes){
   this.createdAt = attributes.createdAt;
   this.name = attributes.name;
   this.dimensions = attributes.dimensions;
 }
+// step 2
 GameObject.prototype.destroy = function (){
   return `${this.name} was removed from the game.`;
 };
+
+
 /*
   === CharacterStats ===
   * healthPoints
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+// step 1
 function CharacterStats (characterAttributes){
-  healthPoints.call(this,characterAttributes);
-  this.takeDamage = characterAttributes.takeDamage;
+  GameObject.call(this, characterAttributes);
+  this.name = characterAttributes.name;
+  this.healthPoints = characterAttributes.healthPoints;
 }
+// step 2
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+// step 3
 CharacterStats.prototype.takeDamage = function(){
   return `${this.name} took damage.`;
 };
-CharacterStats.prototype = Object.create(GameObject.prototype);
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -49,20 +57,22 @@ CharacterStats.prototype = Object.create(GameObject.prototype);
   * should inherit takeDamage() from CharacterStats
 */
 function Humanoid (humanoidAttributes){
+  CharacterStats.call(this, humanoidAttributes);
   this.team = humanoidAttributes.team;
   this.weapons = humanoidAttributes.weapons;
   this.language = humanoidAttributes.language;
 }
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
 Humanoid.prototype.greet = function (){
   return `${this.name} offers a greeting in ${this.language}.`;
 }
-Humanoid.prototype = Object.create(GameObject.prototype);
-Humanoid.prototype = Object.create(CharacterStats.prototype);
+
 /*
-  * Inheritance chain: GameObject -> CharacterStats -> Humanoid
-  * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
-  * Instances of CharacterStats should have all of the same properties as GameObject.
-*/
+//   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
+//   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
+//   * Instances of CharacterStats should have all of the same properties as GameObject.
+// */
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
